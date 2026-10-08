@@ -1,0 +1,14 @@
+{
+  "name": "saintcon-appsec-officer-academy",
+  "version": "0.1.0",
+  "private": true,
+  "type": "module",
+  "description": "A Communication Officer qualification assessment for the AppSec Academy.",
+  "scripts": {
+    "start": "node server.js",
+    "test": "node --test"
+  },
+  "engines": {
+    "node": ">=20"
+  }
+}

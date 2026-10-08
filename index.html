@@ -1,0 +1,33 @@
+<!doctype html>
+<html lang="en">
+<head>
+  <meta charset="utf-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1">
+  <meta name="theme-color" content="#07131f">
+  <meta name="description" content="The AppSec Academy Communication Officer qualification assessment for OWASP and Wasatch AppSec.">
+  <title>AppSec Academy · Communication Officer Qualification</title>
+  <link rel="stylesheet" href="./assets/styles.css">
+</head>
+<body>
+  <a class="skip-link" href="#main">Skip to assessment</a>
+  <div class="scanlines" aria-hidden="true"></div>
+  <header class="topbar">
+    <a class="brand" href="#/" aria-label="AppSec Academy home">
+      <img class="brand-logo" id="brand-logo" src="./assets/space-owasp.png" alt="">
+      <span><strong id="academy-name">AppSec Academy</strong><small id="event-name">SAINTCON 26</small></span>
+    </a>
+    <div class="status"><span class="status-dot"></span> Assessment system online</div>
+    <button class="text-button" id="reset-progress" type="button">Reset session</button>
+  </header>
+
+  <main id="main"></main>
+
+  <footer>
+    <span>APPSEC ACADEMY // TRAINING NETWORK</span>
+    <span>Responses remain in this browser tab only.</span>
+  </footer>
+
+  <div id="toast" class="toast" role="status" aria-live="polite"></div>
+  <script type="module" src="./js/app.js"></script>
+</body>
+</html>

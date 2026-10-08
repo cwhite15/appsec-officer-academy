@@ -1,0 +1,6 @@
+services:
+  officer-academy:
+    build: .
+    ports:
+      - "8087:80"
+    restart: unless-stopped
