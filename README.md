@@ -30,7 +30,9 @@ docker compose up --build
 
 Open <http://localhost:8087>.
 
-There are no package dependencies, external APIs, accounts, or build steps.
+There are no package dependencies, accounts, or build steps. Anonymous question start/completion signals are sent to `https://appsec.community/api/activity`, including when the assessment runs on localhost; answers and scores are never transmitted.
+
+**Reset session** clears assessment state plus the anonymous participant and browser-session identifiers, then reloads for the next attendee. Any queued, unsent events are retained for delivery.
 
 ## Test it
 

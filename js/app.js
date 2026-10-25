@@ -1,5 +1,6 @@
 import { academyConfig } from "./config.js";
 import { gradeAssessment, qualifiesForCtf, questions } from "./questions.js";
+import { recordActivity, resetActivityIdentity } from "./tracker.js";
 
 const main = document.querySelector("#main");
 const toast = document.querySelector("#toast");
@@ -112,6 +113,7 @@ function bindQuestion(question) {
     state.submitted = false;
     state.result = null;
     saveState();
+    if (state.answers[question.id]?.length) recordActivity("officer", `question-${String(question.id).padStart(2, "0")}`, "completed");
     main.innerHTML = questionTemplate(question);
     bindQuestion(question);
     document.querySelector(`input[value="${input.value}"]`)?.focus();
@@ -175,9 +177,9 @@ function resetSession(confirmReset = true) {
   if (confirmReset && answeredCount() > 0 && !window.confirm("Start a new assessment and clear this session's responses?")) return;
   state = emptyState();
   sessionStorage.removeItem(academyConfig.storageKey);
+  resetActivityIdentity();
   window.location.hash = "#/";
-  route();
-  notify("Assessment session reset.");
+  window.location.reload();
 }
 
 function route() {
@@ -204,6 +206,7 @@ function route() {
     saveState();
     main.innerHTML = questionTemplate(question);
     bindQuestion(question);
+    recordActivity("officer", `question-${String(question.id).padStart(2, "0")}`, "started");
   } else {
     main.innerHTML = homeTemplate();
   }
