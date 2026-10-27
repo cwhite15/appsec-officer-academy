@@ -1,4 +1,6 @@
 import { academyConfig } from "./config.js";
+import { cityDefenseOutcome } from "./defense.js";
+import { installIdleReset } from "./idle-reset.js";
 import { gradeAssessment, qualifiesForCtf, questions } from "./questions.js";
 import { recordActivity, resetActivityIdentity } from "./tracker.js";
 
@@ -145,12 +147,63 @@ function answerLabels(question, ids) {
   return ids.map((id) => question.choices.find((choice) => choice.id === id)?.label).filter(Boolean).map(escapeHtml).join("; ");
 }
 
+function cityDefenseTemplate(score, total) {
+  const outcome = cityDefenseOutcome(score, total);
+  const stateClass = outcome.protected ? "protected" : "destroyed";
+  const headline = outcome.protected ? "The shield holds." : "Defenses breached.";
+  const summary = outcome.protected
+    ? "Your communication network identified every threat in time. Interceptors destroy the incoming missiles before they reach the city."
+    : "Critical signals were missed. The defense grid reacts too late, and incoming missiles reach the city.";
+  const label = outcome.protected ? "City protected" : "City destroyed";
+  const aria = outcome.protected
+    ? `City defense simulation. Score ${outcome.percent} percent. A shield intercepts three incoming missiles and the city remains protected.`
+    : `City defense simulation. Score ${outcome.percent} percent. Three incoming missiles pass the disabled shield and destroy the city.`;
+
+  return `<section class="city-defense ${stateClass} running" aria-labelledby="city-defense-title">
+    <div class="defense-brief">
+      <p class="eyebrow">Final scenario // city defense network</p>
+      <h2 id="city-defense-title">${headline}</h2>
+      <p>${summary}</p>
+      <div class="defense-score"><span>Officer score</span><strong>${outcome.percent}%</strong><small>Protection requires greater than ${outcome.threshold}%</small></div>
+      <div class="defense-verdict"><i aria-hidden="true"></i><span>${label}</span></div>
+      <button class="button secondary replay-defense" id="replay-defense" type="button">Replay simulation</button>
+    </div>
+    <div class="defense-stage" role="img" aria-label="${aria}">
+      <div class="defense-stars" aria-hidden="true"></div>
+      <div class="defense-grid" aria-hidden="true"></div>
+      <div class="defense-moon" aria-hidden="true"></div>
+      <span class="incoming-missile missile-one" aria-hidden="true"><i></i></span>
+      <span class="incoming-missile missile-two" aria-hidden="true"><i></i></span>
+      <span class="incoming-missile missile-three" aria-hidden="true"><i></i></span>
+      <div class="defense-shield" aria-hidden="true"><i></i></div>
+      <span class="impact impact-one" aria-hidden="true"></span>
+      <span class="impact impact-two" aria-hidden="true"></span>
+      <span class="impact impact-three" aria-hidden="true"></span>
+      <div class="city-smoke smoke-one" aria-hidden="true"></div>
+      <div class="city-smoke smoke-two" aria-hidden="true"></div>
+      <div class="city-skyline" aria-hidden="true">
+        <i class="building b1"></i><i class="building b2"></i><i class="building b3"></i><i class="building b4"></i><i class="building b5"></i><i class="building b6"></i><i class="building b7"></i><i class="building b8"></i>
+      </div>
+      <div class="defense-ground" aria-hidden="true"></div>
+      <div class="defense-terminal"><span>COMMUNICATION GRID</span><strong>${outcome.protected ? "THREATS INTERCEPTED" : "SIGNAL LOST"}</strong></div>
+    </div>
+  </section>`;
+}
+
+function replayCityDefense() {
+  const scene = document.querySelector(".city-defense");
+  if (!scene) return;
+  scene.classList.remove("running");
+  void scene.offsetWidth;
+  scene.classList.add("running");
+}
+
 function resultsTemplate() {
   const result = state.result || gradeAssessment(state.answers);
   const percent = Math.round((result.score / result.total) * 100);
   const qualified = qualifiesForCtf(result.score, result.total, academyConfig.ctfMinimumPercent);
   const ctfAward = qualified ? `<div class="ctf-award officer-ctf-award"><span>Hackers Challenge CTF token // ${academyConfig.ctfMinimumPercent}% qualification confirmed</span><code id="ctf-token">${academyConfig.ctfToken}</code><button class="button" id="copy-token" type="button">Copy token</button></div>` : "";
-  return `<section class="results"><header class="results-hero"><img class="completion-logo" src="${academyConfig.assets.logo}" alt="OWASP space logo"><p class="eyebrow">Assessment complete</p><h1>Session <span>Results.</span></h1><div class="score-orbit"><strong>${result.score}</strong><span>of ${result.total}<br>${percent}%</span></div><p>${qualified ? "Communication Officer qualification confirmed. Your Hackers Challenge token is ready." : `Your assessment has been scored. Earn ${academyConfig.ctfMinimumPercent}% or better to reveal the Hackers Challenge token.`}</p>${ctfAward}<div class="actions results-actions"><a class="button" href="#results-detail">Review responses</a><button class="button secondary" id="new-session" type="button">Start new session</button></div></header>
+  return `<section class="results">${cityDefenseTemplate(result.score, result.total)}<header class="results-hero"><img class="completion-logo" src="${academyConfig.assets.logo}" alt="OWASP space logo"><p class="eyebrow">Assessment complete</p><h1>Session <span>Results.</span></h1><div class="score-orbit"><strong>${result.score}</strong><span>of ${result.total}<br>${percent}%</span></div><p>${qualified ? "Communication Officer qualification confirmed. Your Hackers Challenge token is ready." : `Your assessment has been scored. Earn ${academyConfig.ctfMinimumPercent}% or better to reveal the Hackers Challenge token.`}</p>${ctfAward}<div class="actions results-actions"><a class="button" href="#results-detail">Review responses</a><button class="button secondary" id="new-session" type="button">Start new session</button></div></header>
     <section class="result-detail" id="results-detail"><div class="section-heading"><div><p class="eyebrow">Answer ledger</p><h2>Question by question.</h2></div><p>Multi-select questions require every correct option and no incorrect options.</p></div>${questions.map((question) => {
       const item = result.results.find((entry) => entry.id === question.id);
       return `<article class="result-row ${item.correct ? "correct" : "incorrect"}"><div class="result-status"><span>${item.correct ? "Correct" : "Incorrect"}</span><strong>${String(question.id).padStart(2, "0")}</strong></div><div><h3>${escapeHtml(question.prompt)}</h3><p><b>Your response:</b> ${answerLabels(question, item.selectedIds)}</p>${item.correct ? "" : `<p><b>Correct response:</b> ${answerLabels(question, question.correctIds)}</p>`}</div></article>`;
@@ -195,6 +248,7 @@ function route() {
     main.innerHTML = resultsTemplate();
     document.querySelector("#new-session").addEventListener("click", () => resetSession(false));
     document.querySelector("#copy-token")?.addEventListener("click", copyCtfToken);
+    document.querySelector("#replay-defense")?.addEventListener("click", replayCityDefense);
   } else if (path.startsWith("#/assessment/question/")) {
     const id = Number(path.split("/").pop());
     const question = questions.find((item) => item.id === id);
@@ -217,3 +271,4 @@ document.querySelector("#reset-progress").addEventListener("click", () => resetS
 window.addEventListener("hashchange", route);
 applyTheme();
 route();
+installIdleReset(() => resetSession(false));

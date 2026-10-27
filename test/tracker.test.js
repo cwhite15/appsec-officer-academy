@@ -27,3 +27,7 @@ test("reset progress clears tracker identity and reloads", () => {
   assert.match(appClient, /resetActivityIdentity\(\)/);
   assert.match(appClient, /window\.location\.reload\(\)/);
 });
+
+test("five minutes of inactivity starts the same full session reset", () => {
+  assert.match(appClient, /installIdleReset\(\(\) => resetSession\(false\)\)/);
+});
