@@ -31,3 +31,8 @@ test("reset progress clears tracker identity and reloads", () => {
 test("five minutes of inactivity starts the same full session reset", () => {
   assert.match(appClient, /installIdleReset\(\(\) => resetSession\(false\)\)/);
 });
+
+test("academy logo clears the participant session before returning to the portal", () => {
+  assert.match(appClient, /document\.querySelector\("\.brand"\)\.addEventListener\("click", returnToCommunity\)/);
+  assert.match(appClient, /clearParticipantSession\(\);\s*window\.location\.assign\("\/"\)/);
+});

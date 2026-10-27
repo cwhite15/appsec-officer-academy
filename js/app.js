@@ -226,13 +226,23 @@ async function copyCtfToken() {
   notify("CTF token copied.");
 }
 
-function resetSession(confirmReset = true) {
-  if (confirmReset && answeredCount() > 0 && !window.confirm("Start a new assessment and clear this session's responses?")) return;
+function clearParticipantSession() {
   state = emptyState();
   sessionStorage.removeItem(academyConfig.storageKey);
   resetActivityIdentity();
+}
+
+function resetSession(confirmReset = true) {
+  if (confirmReset && answeredCount() > 0 && !window.confirm("Start a new assessment and clear this session's responses?")) return;
+  clearParticipantSession();
   window.location.hash = "#/";
   window.location.reload();
+}
+
+function returnToCommunity(event) {
+  event.preventDefault();
+  clearParticipantSession();
+  window.location.assign("/");
 }
 
 function route() {
@@ -268,6 +278,7 @@ function route() {
 }
 
 document.querySelector("#reset-progress").addEventListener("click", () => resetSession(true));
+document.querySelector(".brand").addEventListener("click", returnToCommunity);
 window.addEventListener("hashchange", route);
 applyTheme();
 route();
