@@ -3,7 +3,7 @@ export const academyConfig = {
   academy: "AppSec Academy",
   program: "Communication Officer Qualification",
   tagline: "Know the community. Share the mission.",
-  ctfToken: "SC26{APPSEC_OFFICER_COMMUNITY_SIGNAL}",
+  ctfToken: "HC{APPSEC_OFFICER_COMMUNITY_SIGNAL}",
   ctfMinimumPercent: 90,
   storageKey: "saintcon-appsec-officer-session-v1",
   ranks: ["Cadet", "Navigator", "Communication Officer", "Commander"],
