@@ -10,6 +10,7 @@ A self-contained, ten-question qualification assessment based on the supplied **
 - A review screen flags unanswered items and prevents submission until all ten are complete.
 - Final results show score, percentage, submitted answers, and correct answers for missed questions.
 - Scores of 90% or better reveal a copyable Hackers Challenge CTF token.
+- The home screen shows community QR codes for the Wasatch AppSec Slack and the AppSec Pro Bono Initiative; the results screen adds an OWASP Salt Lake City Meetup QR code. Each code prints its URL beneath it, and URLs, labels, and images live in `js/config.js` under `community`.
 - Starting a new session or closing the browser tab clears the session result.
 
 ## Run it
@@ -40,7 +41,7 @@ There are no package dependencies, accounts, or build steps. Anonymous question 
 npm test
 ```
 
-Tests validate question-bank integrity, the source PDF answer key, single-choice grading, exact multi-select grading, and aggregate scoring.
+Tests validate question-bank integrity, the source PDF answer key, single-choice grading, exact multi-select grading, aggregate scoring, and the community QR links.
 
 ## Project map
 
@@ -48,7 +49,7 @@ Tests validate question-bank integrity, the source PDF answer key, single-choice
 appsec-officer-academy/
 |-- assets/             Academy artwork, fonts, and responsive styles
 |-- js/app.js           Hash routing, session state, assessment UI, and results
-|-- js/config.js        Event, branding, storage key, assets, and color theme
+|-- js/config.js        Event, branding, storage key, assets, community links, and color theme
 |-- js/questions.js     PDF-derived question bank and pure grading helpers
 |-- test/               Node built-in tests
 |-- Dockerfile          Production nginx image
@@ -60,3 +61,5 @@ appsec-officer-academy/
 ## Content maintenance
 
 The question copy and answer key are kept in `js/questions.js`. Question 6 intentionally preserves the PDF's time-sensitive November 18 / SAINTCON 2026 recap wording. Update that entry when the chapter announces a new meeting.
+
+The AppSec Pro Bono Initiative form is not published yet, so its tile shows a placeholder image and "Form link coming soon". When the form is live, set `community.proBono.url` in `js/config.js` and replace `assets/qr/pro-bono-form.svg` with the form's QR code.

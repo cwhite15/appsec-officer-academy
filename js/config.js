@@ -12,6 +12,32 @@ export const academyConfig = {
     recruitmentPoster: "./assets/appsec-needs-you.png",
     rankPoster: "./assets/appsec-ranks.png"
   },
+  // QR tiles on the home and results screens. Each image is a black-on-white QR code for its
+  // url; paths stay relative because the portal serves this app under /communication-officers/.
+  community: {
+    slack: {
+      label: "Join us on Slack",
+      note: "Wasatch AppSec / OWASP Salt Lake City",
+      url: "https://join.slack.com/t/wasatchappsec/shared_invite/zt-1wgxnyqpt-FgwaUExorcc3o5gbdpFdhw",
+      image: "./assets/qr/slack.svg"
+    },
+    // The pro bono request form is not published yet. To go live, set url to the form link and
+    // replace assets/qr/pro-bono-form.svg with that link's QR code (black on white, same name).
+    // While url is empty the tile shows the placeholder image and caption in place of a URL.
+    proBono: {
+      label: "AppSec Pro Bono Initiative",
+      note: "Tell us what your organization needs, and community volunteers will come to you for a round-table with whoever you invite: you bring questions, we bring answers. In return, host or provide lunch for one of our monthly AppSec Community Meetups. Talking about application security makes us hungry.",
+      url: "",
+      placeholder: "Form link coming soon",
+      image: "./assets/qr/pro-bono-form.svg"
+    },
+    meetup: {
+      label: "Meet us in person",
+      note: "OWASP Salt Lake City on Meetup",
+      url: "https://www.meetup.com/owasp-slc/",
+      image: "./assets/qr/meetup.svg"
+    }
+  },
   timing: {
     thinkingMs: 850,
     wordMinMs: 75,
