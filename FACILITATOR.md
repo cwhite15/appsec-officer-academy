@@ -6,7 +6,7 @@
 2. Select **Reset session** if a previous attendee's answers are visible.
 3. Confirm the header says **Assessment system online**.
 
-Below the assessment briefing, the home screen has a **Community channels** block with two QR codes: **Join us on Slack** (Wasatch AppSec / OWASP Salt Lake City) and the **AppSec Pro Bono Initiative** for organizations. Until the pro bono form is published, that tile shows a placeholder and "Form link coming soon".
+Below the assessment briefing, the home screen has a **Community channels** block with two QR codes: **Join us on Slack** (Wasatch AppSec / OWASP Salt Lake City) and the **AppSec Pro Bono Initiative** for organizations.
 
 ## Assessment flow
 

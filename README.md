@@ -62,4 +62,4 @@ appsec-officer-academy/
 
 The question copy and answer key are kept in `js/questions.js`. Question 6 intentionally preserves the PDF's time-sensitive November 18 / SAINTCON 2026 recap wording. Update that entry when the chapter announces a new meeting.
 
-The AppSec Pro Bono Initiative form is not published yet, so its tile shows a placeholder image and "Form link coming soon". When the form is live, set `community.proBono.url` in `js/config.js` and replace `assets/qr/pro-bono-form.svg` with the form's QR code.
+The community QR codes (Slack, AppSec Pro Bono Initiative form, Meetup) are configured in `js/config.js` under `community`. If a link changes, update its `url` and replace the matching image in `assets/qr/` with a black-on-white QR code for the new URL; the tests check that each SVG was generated for its URL.

@@ -62,9 +62,7 @@ function applyTheme() {
 // zone that phones can scan against the dark theme. The plain URL stays visible for anyone
 // who would rather type it; no link, because a new tab is a dead end on a kiosk.
 function qrTile(link, className = "") {
-  const caption = link.url || link.placeholder;
-  const alt = link.url ? `QR code: ${link.label}` : `Placeholder: ${link.placeholder}`;
-  return `<figure class="qr-tile${className ? ` ${className}` : ""}"><span class="qr-frame"><img src="${escapeHtml(link.image)}" alt="${escapeHtml(alt)}" width="160" height="160"></span><figcaption><strong>${escapeHtml(link.label)}</strong>${link.note ? `<p>${escapeHtml(link.note)}</p>` : ""}<small>${escapeHtml(caption)}</small></figcaption></figure>`;
+  return `<figure class="qr-tile${className ? ` ${className}` : ""}"><span class="qr-frame"><img src="${escapeHtml(link.image)}" alt="${escapeHtml(`QR code: ${link.label}`)}" width="160" height="160"></span><figcaption><strong>${escapeHtml(link.label)}</strong>${link.note ? `<p>${escapeHtml(link.note)}</p>` : ""}<small>${escapeHtml(link.url)}</small></figcaption></figure>`;
 }
 
 function homeTemplate() {
